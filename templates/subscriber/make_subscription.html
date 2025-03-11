@@ -1,0 +1,23 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+    <h1>Subscribe</h1>
+    <h2>to get you posted</h2>
+    <hr>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Подписаться</button>
+</form>
+
+{% if form.errors %}
+    <div>
+        <h3>Ошибки:</h3>
+        <ul>
+            {% for field, errors in form.errors.items %}
+                <li>{{ field }}: {{ errors|join:", " }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+{% endblock content %}

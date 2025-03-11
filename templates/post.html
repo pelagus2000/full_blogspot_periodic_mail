@@ -1,0 +1,41 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block content %}
+    <hr>
+    <h2>{{ flatpage.title }}</h2>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.body }}</p>
+    <p>{{ post.date|date:"M d Y l" }}</p>
+    <h1>{{ comment|censor }}</h1>
+    <h3>POST DETAIL READY</h3>
+    <button><a href="{% url 'news_update' post.id %}">Update</a></button>
+    <button><a href="{% url 'news_delete' post.id %}">Delete</a></button>
+
+    <hr>
+    <h3>Комментарии</h3>
+    <ul>
+        {% for comment in comments %}
+            <li>
+                <p><strong>{{ comment.user }}</strong>, {{ comment.created_at|date:"d.m.Y H:i" }}</p>
+                <p>{{ comment.content }}</p>
+            </li>
+        {% empty %}
+            <li>Нет комментариев</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    {% if user.is_authenticated %}
+        <h3>Оставить комментарий</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>
+    {% else %}
+        <p>Только зарегистрированные пользователи могут оставлять комментарии.</p>
+    {% endif %}
+{% endblock content %}

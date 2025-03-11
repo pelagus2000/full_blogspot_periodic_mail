@@ -1,0 +1,75 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block content %}
+
+
+    <hr>
+
+    <!-- Отображение списка постов -->
+    <h3>Список постов</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Заголовок</th>
+                <th>Дата публикации</th>
+                <th>Превью</th>
+                <th>Категории</th>
+                <th>Автор</th>
+                <th>Ссылка</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in posts %}
+            <tr>
+                <td>{{ post.id }}</td>
+                <td>{{ post.title }}</td>
+                <td>{{ post.date|date:"d.m.Y H:i" }}</td>
+                <td>{{ post.preview|default:"Нет превью" }}</td>
+                <td>
+                    {% for category in post.categories.all %}
+                        {{ category.name }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        None
+                    {% endfor %}
+                </td>
+                <td>{{ post.author }}</td>
+                <td><a href="{{ post.get_absolute_url_detail }}">Подробнее</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Нет постов, соответствующих фильтру.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+   {# Информация о предыдущих страницах #}
+   {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+    <h2>Фильтр новостей</h2>
+    <!-- Форма фильтрации -->
+    <form method="get">
+        {{ filterset.form.as_p }}
+        <button type="submit" class="btn btn-primary">Найти</button>
+    </form>
+{% endblock content %}
