@@ -6,6 +6,8 @@ from django.core.mail import send_mail
 from author.models import CategoryMail
 from .models import Subscriber
 from django.contrib import messages
+from django.http import HttpResponse
+# from .tasks import hello
 # from django.db import IntegrityError
 
 class SubscriberView(View):
@@ -59,3 +61,9 @@ class SubscriberView(View):
         else:
             # Если данные невалидны, возвращаем форму с ошибками
             return render(request, 'subscriber/make_subscription.html', {'form': form})
+
+
+# class IndexView(View):
+#     def get(self, request):
+#         hello.delay()
+#         return HttpResponse('Hello!')

@@ -1,17 +1,12 @@
 from django.apps import AppConfig
-import redis
+from django.db.models.signals import post_migrate
 
-red = redis.Redis(
-    host = 'redis-15129.c91.us-east-1-3.ec2.redns.redis-cloud.com',
-    port = 15129
-    # password=
-    # commandline = redis-cli -u redis://default:ytGJpqcoSNtEkgN4IDsCQ5PlAzA6GJUP@redis-15129.c91.us-east-1-3.ec2.redns.redis-cloud.com:15129
-)
 
 class SubscriberConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'subscriber'
 
     def ready(self):
-        from . import tasks
-        tasks.start()
+        # Import signals here to register them properly
+        from .signals import setup_periodic_tasks  # Import only when the app is fully loaded
+        post_migrate.connect(setup_periodic_tasks, sender=self)
