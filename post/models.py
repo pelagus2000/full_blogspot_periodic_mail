@@ -9,7 +9,8 @@ from django.utils.timezone import now
 from django.core.exceptions import ValidationError
 from urllib.parse import unquote as urlunquote
 from django.contrib.sites.models import Site
-
+from django.core.cache import cache
+from django.utils.translation import gettext as _  # импортируем функцию для перевода
 
 
 
@@ -29,7 +30,7 @@ class Posts(models.Model):
     )
     title = models.CharField(max_length=75, blank=False)
     body = models.TextField(blank=False, default='Empty field')
-    preview = models.CharField(max_length=127, blank=True)  # Интеграция поля preview
+    preview = models.CharField(max_length=127, blank=True)
     slug = models.SlugField()
     date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -45,6 +46,10 @@ class Posts(models.Model):
 
         super().save(*args, **kwargs)
 
+        cache_key = f'post-{self.pk}'
+        cache.delete(cache_key)
+
+
     def post_like(self):
         self.post_rating += 1
         self.save()
@@ -55,7 +60,9 @@ class Posts(models.Model):
 
     def get_absolute_url_detail(self):
         current_site = Site.objects.get_current()
-        return f'http://{current_site.domain}{reverse("post_detail", kwargs={"pk": self.pk})}'
+        # return f'http://{current_site.domain}{reverse("post_detail", kwargs={"pk": self.pk})}'
+        # return f'/products/{self.id}'
+        return reverse('post_detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return f'{self.title.title()}' #({self.price})'

@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from .models import Posts
 from django.forms.widgets import CheckboxSelectMultiple
 from category.models import Category
+from django.utils.translation import gettext as _  # импортируем функцию для перевода
 
 class NewsForm(forms.ModelForm):
     class Meta:

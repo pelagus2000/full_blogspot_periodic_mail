@@ -1,24 +1,24 @@
 {% extends 'flatpages/default.html' %}
 
 {% load custom_filters %}
-
+{% load i18n %}
 {% block content %}
 
 
     <hr>
 
     <!-- Отображение списка постов -->
-    <h3>Список постов</h3>
+    <h3>{% trans 'Список постов' %}</h3>
     <table class="table">
         <thead>
             <tr>
                 <th>No.</th>
-                <th>Заголовок</th>
-                <th>Дата публикации</th>
-                <th>Превью</th>
-                <th>Категории</th>
-                <th>Автор</th>
-                <th>Ссылка</th>
+                <th>{% trans "Заголовок" %}</th>
+                <th>{% trans "Дата публикации" %}</th>
+                <th>{% trans "Предпросмотр" %}</th>
+                <th>{% trans "Категории" %}</th>
+                <th>{% trans "Автор" %}</th>
+                <th>{% trans "Ссылка" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -36,11 +36,11 @@
                     {% endfor %}
                 </td>
                 <td>{{ post.author }}</td>
-                <td><a href="{{ post.get_absolute_url_detail }}">Подробнее</a></td>
+                <td><a href="{{ post.get_absolute_url_detail }}">{% trans "Подробнее" %}</a></td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="5">Нет постов, соответствующих фильтру.</td>
+                <td colspan="5">{% trans "Нет постов, соответствующих фильтру." %}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -66,10 +66,10 @@
            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
        {% endif %}
    {% endif %}
-    <h2>Фильтр новостей</h2>
+    <h3>{% trans "Фильтр постов" %}</h3>
     <!-- Форма фильтрации -->
     <form method="get">
         {{ filterset.form.as_p }}
-        <button type="submit" class="btn btn-primary">Найти</button>
+        <button type="submit" class="btn btn-primary">{% trans "Найти" %}</button>
     </form>
 {% endblock content %}

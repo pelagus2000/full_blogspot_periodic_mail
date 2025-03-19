@@ -1,5 +1,5 @@
 {% extends 'flatpages/default.html' %}
-
+{% load i18n %}
 {% load custom_filters %}
 
 {% block content %}
@@ -14,7 +14,7 @@
     <button><a href="{% url 'news_delete' post.id %}">Delete</a></button>
 
     <hr>
-    <h3>Комментарии</h3>
+    <h3>{% trans 'Комментарии' %}</h3>
     <ul>
         {% for comment in comments %}
             <li>
@@ -22,20 +22,20 @@
                 <p>{{ comment.content }}</p>
             </li>
         {% empty %}
-            <li>Нет комментариев</li>
+            <li>{% trans 'Нет комментариев' %}</li>
         {% endfor %}
     </ul>
 
     <hr>
 
     {% if user.is_authenticated %}
-        <h3>Оставить комментарий</h3>
+        <h3>{% trans 'Оставить комментарий</h3>
         <form method="post">
             {% csrf_token %}
             {{ comment_form.as_p }}
-            <button type="submit" class="btn btn-primary">Добавить</button>
+            <button type="submit" class="btn btn-primary">{% trans 'Добавить</button>
         </form>
     {% else %}
-        <p>Только зарегистрированные пользователи могут оставлять комментарии.</p>
+        <p>{% trans 'Только зарегистрированные пользователи могут оставлять комментарии.</p>
     {% endif %}
 {% endblock content %}

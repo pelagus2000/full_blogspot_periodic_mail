@@ -1,12 +1,12 @@
 {% extends 'flatpages/default.html' %}
+{% load i18n %}
+{% load cache %} <!-- Загружаем кэширование -->
+    {% cache 300 content %} <!-- Кэшируем отдельный блок на 30 секунд -->
+        {% block content %}
+        {{ flatpage.content }}
 
-{% block content %}
-{#{{ flatpage.content }}#}
-<hr>
+        <h3>{% trans 'Наши контакты:pelagus2000@yandex.ru' %}</h3>
+            <hr>
 
-<body>
-    <hr>
-    <h3>Наши контакты:</h3>
-    {{ flatpage.content }}
-</body>
-{% endblock content %}
+        {% endblock content %}
+    {% endcache %}

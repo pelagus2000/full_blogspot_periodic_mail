@@ -1,8 +1,13 @@
 {% extends 'flatpages/default.html' %}
+{% load i18n %}
+{% load cache %} <!-- Загружаем кэширование -->
+    {% cache 300 content %} <!-- Кэшируем отдельный блок на 30 секунд -->
+        {% block content %}
+        {{ flatpage.content }}
 
-{% block content %}
-{{ flatpage.content }}
-<h3>Наши контакты:</h3>
-    <hr>
+        <h3>{% trans 'This is blog_post created by ERa:' %}</h3>
+            <hr>
 
-{% endblock content %}
+        {% endblock content %}
+    {% endcache %}
+

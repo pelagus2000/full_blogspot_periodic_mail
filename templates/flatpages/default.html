@@ -1,73 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-{#        <link rel="stylesheet" href="https://cdnjs.coudflare.com/ajax/libs/milligram/1.4.1/milligram.css">#}
-        <title>Bare - Start Bootstrap Template</title>
-        <!-- Favicon-->
-        <!-- Core theme CSS (includes Bootstrap)-->
-        {% load static %}
-        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
-    </head>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Bare - Start Bootstrap Template</title>
+    {% load static %}
+    {% load i18n %}
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+</head>
 
-    <body>
-        <!-- Responsive navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="#">SkillFactory BlogSpot</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'posts_list' %}">Posts</a></li>
-                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'subscriber:subscription' %}">Subscribe</a></li>
-                            {% if user.is_authenticated %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'account_logout' %}">Logout</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'users-profile' %}">Profile</a></li>
-                            {% else %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Login/Register</a></li>
-                            {% endif %}
-                            {% if is_author %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'article_create' %}">Create Article</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'news_create' %}">Create News</a></li>
-                            {% endif %}
-                            {% if user.is_superuser %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'add-category' %}">Create Category</a></li>?
-                            {% endif %}
-                            <li class="nav-item dropdown">
-                                {% if user.is_authenticated %}
-                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">JSON IS OFF</a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#">Create Article </a></li>
-                                    <li><hr class="dropdown-divider" /></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                    <li><a class="dropdown-item" href="#">News Create</a></li>
-                                </ul>
-                                {% endif %}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-        </nav>
-        <!-- Page content-->
+<body>
+    <!-- Navbar Section -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <!-- Messages -->
-            {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li class="{{ message.tags }}">{{ message }}</li>
-                    {% endfor %}
+            <a class="navbar-brand" href="#">SkillFactory BlogSpot</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'posts_list' %}">{% trans "Posts" %}</a></li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'users-profile' %}">{% trans "Profile" %}</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">{% trans "Login/Register" %}</a></li>
+                    {% endif %}
+                    {% if is_author %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'article_create' %}">{% trans "Create Article" %}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'news_create' %}">{% trans "Create News" %}</a></li>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'add-category' %}">{% trans "Create Category" %}</a></li>
+                    {% endif %}
                 </ul>
-            {% endif %}
-            <!-- Main content -->
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    {% block content %}
-                    {% endblock content %}
-                </div>
+
+                <!-- Language Switcher Form -->
+                <!-- Language Switcher with Flags -->
+                <form method="post" action="{% url 'set_language' %}" class="d-flex ms-3">
+                    {% csrf_token %}
+                    <select name="language" class="form-select form-select-sm me-2" onchange="this.form.submit()">
+                        {% for lang_code, lang_name in LANGUAGES %}
+                        <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>
+                            {% if lang_code == 'en' %}
+                            🇬🇧 <!-- British Flag icon -->
+                            {% elif lang_code == 'ru' %}
+                            🇷🇺 <!-- Russian Flag icon -->
+                            {% endif %}
+                            {{ lang_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <noscript><button type="submit" class="btn btn-sm btn-outline-light">Apply</button></noscript>
+                </form>
+
+
+                <!-- End Language Switcher Form -->
+
             </div>
         </div>
+    </nav>
+
+    <!-- Page content -->
+    <div class="container">
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="navbar navbar-dark bg-dark py-2">
+        <div class="container d-flex justify-content-center">
+            <ul class="navbar-nav d-flex flex-row">
+                <li class="nav-item">
+                    <a class="nav-link text-light px-3" href="{% url 'django.contrib.flatpages.views.flatpage' '/about/' %}">
+                        {% trans "About" %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light px-3" href="{% url 'django.contrib.flatpages.views.flatpage' '/contact/' %}">
+                        {% trans "Contact" %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light px-3" href="{% url 'subscriber:subscription' %}">
+                        {% trans "Subscribe" %}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </footer>
     </body>
 </html>

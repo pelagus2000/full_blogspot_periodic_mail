@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .filters import PostsFilter
 from .models import Posts
@@ -22,6 +23,18 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from comment.models import Comment
 from comment.forms import CommentForm
+from django.core.cache import cache
+from django.utils.translation import gettext as _  # импортируем функцию для перевода
+
+
+# Create your views here.
+
+class Index(View):
+    def get(self, request):
+        string = _('Hello world')
+
+        return HttpResponse(string)
+
 
 class PostsList(ListView):
     model = Posts
@@ -83,6 +96,25 @@ class PostsDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
             messages.error(request, "Ошибка при добавлении комментария.")
 
         return redirect(self.object.get_absolute_url_detail())
+    def get(self, request, *args, **kwargs):
+        print("DEBUG: PostsDetail accessed with PK =", kwargs.get('pk'))
+        return super().get(request, *args, **kwargs)
+
+    def get_object(self, *args, **kwargs):  # hash this function if URL cache is activated
+        # Define the cache key based on the post id
+        cache_key = f'post-{self.kwargs["pk"]}'
+
+        # Check if the object is already cached
+        obj = cache.get(cache_key, None)
+
+        if not obj:
+            # Fetch the object from the database
+            obj = super().get_object(*args, **kwargs)
+
+            # Cache the object for 5 minutes (300 seconds)
+            cache.set(cache_key, obj, timeout=300)
+
+        return obj
 
 
 @method_decorator(login_required, name='dispatch')
