@@ -131,8 +131,8 @@ DATABASES = {
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql', # postgres1
         'NAME': 'djangodb',  # Database name postgres2
-        'USER': 'postgres',  # Database username postgres3
-        'PASSWORD': '1945',  # Database password postgres4
+        'USER': '*******',  # Database username postgres3
+        'PASSWORD': '******',  # Database password postgres4
         'HOST': 'localhost',  # Set to 'localhost' or the server address postgres5
         'PORT': '5432',  # Default PostgreSQL port (5432) postgres6
     }
@@ -200,7 +200,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
 EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера Яндекс-почты для всех один и тот же
 EMAIL_PORT = 465  # порт smtp сервера тоже одинаковый
 EMAIL_HOST_USER = 'pelagus2000@yandex.ru'  # ваше имя пользователя, например, если ваша почта user@yandex.ru, то сюда надо писать user, иными словами, это всё то что идёт до собаки
-EMAIL_HOST_PASSWORD = 'gejupzynnzhzbvrj'  # пароль от почты
+EMAIL_HOST_PASSWORD = '**************'  # пароль от почты
 # EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  # пароль от почты
 EMAIL_USE_SSL = True  # Яндекс использует ssl, подробнее о том, что это, почитайте в дополнительных источниках, но включать его здесь обязательно
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
