@@ -27,7 +27,7 @@
                 <td>{{ post.id }}</td>
                 <td>{{ post.title }}</td>
                 <td>{{ post.date|date:"d.m.Y H:i" }}</td>
-                <td>{{ post.preview|default:"Нет превью" }}</td>
+                <td>{{ post.body|truncatechars:127 }}</td>
                 <td>
                     {% for category in post.categories.all %}
                         {{ category.name }}{% if not forloop.last %}, {% endif %}

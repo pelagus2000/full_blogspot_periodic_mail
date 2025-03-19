@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Posts
 from category.models import Category
 from django.contrib import messages
-
+from modeltranslation.admin import TranslationAdmin
 
 
 @admin.action(description="Удалить все новости из указанной категории")
@@ -26,7 +26,9 @@ def delete_news_by_category(modeladmin, request, queryset):
         f"Удалено {count} новостей из категории '{category.name}': {', '.join(post_titles)}"
     )
 
-class PostsAdmin(admin.ModelAdmin):
+class PostsAdmin(TranslationAdmin, admin.ModelAdmin):
+    model = Posts
+
     def display_categories(self, obj):
         return ", ".join([category.name for category in obj.categories.all()])
 
@@ -37,5 +39,7 @@ class PostsAdmin(admin.ModelAdmin):
     list_filter = ('author', 'categories') # добавляем примитивные фильтры в нашу админку
     search_fields = ('author', 'date') # тут всё очень похоже на фильтры из запросов в базу
     actions = [delete_news_by_category] # добавляем действия в список
+
+
 
 admin.site.register(Posts, PostsAdmin)
