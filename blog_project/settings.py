@@ -133,8 +133,8 @@ DATABASES = {
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql', # postgres1
         'NAME': 'djangodb',  # Database name postgres2
-        'USER': 'postgres',  # Database username postgres3
-        'PASSWORD': '1945',  # Database password postgres4
+        'USER': '*********',  # Database username postgres3
+        'PASSWORD': '******',  # Database password postgres4
         'HOST': 'localhost',  # Set to 'localhost' or the server address postgres5
         'PORT': '5432',  # Default PostgreSQL port (5432) postgres6
     }
