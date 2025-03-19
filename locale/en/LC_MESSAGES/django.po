@@ -1,0 +1,140 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+
+
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-18 14:03+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: blog_project/settings.py:165
+msgid "English"
+msgstr "English"
+
+#: blog_project/settings.py:166
+msgid "Русский"
+msgstr "Русский"
+
+#: templates/account/profile.html:4
+msgid "Страница авторизованного пользователя"
+msgstr "Authorrized user page"
+
+#: templates/account/profile.html:5 templates/profile/index.html:5
+msgid "Здесь может содержаться персональная информация для каждого пользователя"
+msgstr "Here may be personal information for each user"
+
+#: templates/account/profile.html:7 templates/profile/index.html:10
+msgid "Выйти"
+msgstr "Logout"
+
+#: templates/article_delete.html:4
+msgid "Удаление статьи"
+msgstr "Delete article"
+
+#: templates/article_delete.html:8 templates/news_delete.html:8
+msgid "Удаляем?"
+msgstr "Delete?"
+
+#: templates/flatpages/contact_page.html:8
+msgid "Наши контакты:pelagus2000@yandex.ru"
+msgstr "Our contacts:pelagus2000@yandex.ru"
+
+#: templates/news_delete.html:4
+msgid "Удаление новости"
+msgstr "Delete news"
+
+#: templates/post.html:17
+msgid "Комментарии"
+msgstr "Commentary"
+
+#: templates/post.html:25
+msgid "Нет комментариев"
+msgstr "No commentaries"
+
+#: templates/posts.html:11
+msgid "Список постов"
+msgstr "Post's list"
+
+#: templates/posts.html:16
+msgid "Заголовок"
+msgstr "Title"
+
+#: templates/posts.html:17
+msgid "Дата публикации"
+msgstr "Publish date"
+
+#: templates/posts.html:18
+msgid "Предпросмотр"
+msgstr "Preview"
+
+#: templates/posts.html:19
+msgid "Категории"
+msgstr "Category"
+
+#: templates/posts.html:20
+msgid "Автор"
+msgstr "Author"
+
+#: templates/posts.html:21
+msgid "Ссылка"
+msgstr "Link"
+
+#: templates/posts.html:39
+msgid "Подробнее"
+msgstr "Detail"
+
+#: templates/posts.html:43
+msgid "Нет постов, соответствующих фильтру."
+msgstr "No posts matching filter"
+
+#: templates/posts.html:69
+msgid "Фильтр постов"
+msgstr "Post filter"
+
+#: templates/posts.html:73
+msgid "Найти"
+msgstr "Search"
+
+#: templates/profile/author_creation.html:20
+msgid "Регистрация автора"
+msgstr "Author registration"
+
+#: templates/profile/author_creation.html:26
+#: templates/profile/category_creation.html:20
+msgid "Сохранить"
+msgstr "Save"
+
+#: templates/profile/author_creation.html:30
+#: templates/profile/category_creation.html:24
+msgid "Вернуться в профиль"
+msgstr "Return to profile"
+
+#: templates/profile/category_creation.html:5
+msgid "Добавить категорию"
+msgstr "Add category"
+
+#: templates/profile/index.html:4
+msgid "Страница авторизованного пользователя {{request.user.username}}"
+msgstr "Authorized user {{request.user.username}} page."
+
+#: templates/profile/index.html:15
+msgid "Хочу стать автором"
+msgstr "Want fo become author"
+
+#: templates/profile/index.html:17
+msgid "Вы уже являетесь автором."
+msgstr "You are already an author."
+
+
