@@ -29,7 +29,7 @@ msgstr "Русский"
 
 #: templates/account/profile.html:4
 msgid "Страница авторизованного пользователя"
-msgstr "Authorrized user page"
+msgstr "Authorized user page"
 
 #: templates/account/profile.html:5 templates/profile/index.html:5
 msgid "Здесь может содержаться персональная информация для каждого пользователя"

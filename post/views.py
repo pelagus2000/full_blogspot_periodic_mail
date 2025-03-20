@@ -32,6 +32,8 @@ from datetime import datetime, timedelta
 import pytz
 from django.utils import timezone
 from django.utils.timezone import activate
+from django.utils.timezone import now
+
 
 
 
@@ -88,10 +90,12 @@ class PostsList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
-        context['current_time'] = timezone.now()
+        user_timezone = timezone.get_current_timezone()  # Get the user's current timezone
+        context['current_time'] = timezone.now().astimezone(user_timezone)  # Adjust to user's timezone
         context['timezones'] = pytz.common_timezones
 
         return context
+
 
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
@@ -105,6 +109,9 @@ class PostsDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentForm()
         context['comments'] = self.object.comments.all()
+        user_timezone = timezone.get_current_timezone()
+        context['current_time'] = timezone.now().astimezone(user_timezone)  # Adjust to user's timezone
+        context['timezones'] = pytz.common_timezones
         return context
 
     def post(self, request, *args, **kwargs):
@@ -152,10 +159,18 @@ class PostsDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
 class NewsCreate(PermissionRequiredMixin, CreateView):
     form_class = NewsForm
     model = Posts
+    # context_object_name = 'post'
     template_name = 'news_edit.html'
     success_url = reverse_lazy('posts_list')
 
     permission_required = 'post.add_posts'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_timezone = timezone.get_current_timezone()
+        context['current_time'] = timezone.now().astimezone(user_timezone)  # Adjust to user's timezone
+        context['timezones'] = pytz.common_timezones
+        return context
 
     def form_valid(self, form):
         # Установка текущего автора
@@ -236,6 +251,13 @@ class ArticleCreate(PermissionRequiredMixin, CreateView):
 
     permission_required = 'post.add_posts'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_timezone = timezone.get_current_timezone()
+        context['current_time'] = timezone.now().astimezone(user_timezone)  # Adjust to user's timezone
+        context['timezones'] = pytz.common_timezones
+        return context
+
     def form_valid(self, form):
         # Установка текущего автора
         author = get_object_or_404(Author, user=self.request.user)
@@ -312,6 +334,13 @@ class NewsUpdate(CreatorPermissionMixin, PermissionRequiredMixin, UserPassesTest
     permission_required = 'post.change_posts'
     success_url = reverse_lazy('posts_list')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_timezone = timezone.get_current_timezone()
+        context['current_time'] = timezone.now().astimezone(user_timezone)  # Adjust to user's timezone
+        context['timezones'] = pytz.common_timezones
+        return context
+
     def test_func(self):
     # Проверка прав пользователя, например, только автор может редактировать
         post = self.get_object()
@@ -330,6 +359,13 @@ class NewsDelete(CreatorPermissionMixin, PermissionRequiredMixin, UserPassesTest
     template_name = 'news_delete.html'
     success_url = reverse_lazy('posts_list')
     permission_required = 'post.delete_posts'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_timezone = timezone.get_current_timezone()
+        context['current_time'] = timezone.now().astimezone(user_timezone)  # Adjust to user's timezone
+        context['timezones'] = pytz.common_timezones
+        return context
 
     def test_func(self):
     # Проверка прав пользователя, например, только автор может редактировать
@@ -351,6 +387,13 @@ class ArticleUpdate(CreatorPermissionMixin, PermissionRequiredMixin, UserPassesT
     permission_required = 'post.change_posts'
     success_url = reverse_lazy('posts_list')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_timezone = timezone.get_current_timezone()
+        context['current_time'] = timezone.now().astimezone(user_timezone)  # Adjust to user's timezone
+        context['timezones'] = pytz.common_timezones
+        return context
+
     def test_func(self):
     # Проверка прав пользователя, например, только автор может редактировать
         post = self.get_object()
@@ -369,6 +412,13 @@ class ArticleDelete(CreatorPermissionMixin, PermissionRequiredMixin, UserPassesT
     template_name = 'article_delete.html'
     success_url = reverse_lazy('posts_list')
     permission_required = 'post.delete_posts'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_timezone = timezone.get_current_timezone()
+        context['current_time'] = timezone.now().astimezone(user_timezone)  # Adjust to user's timezone
+        context['timezones'] = pytz.common_timezones
+        return context
 
     def test_func(self):
     # Проверка прав пользователя, например, только автор может редактировать

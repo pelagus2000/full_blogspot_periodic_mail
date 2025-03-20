@@ -8,6 +8,17 @@
     {% load i18n %}
     {% load tz %}
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    <style>
+        body {
+            background-color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} darkcyan {% else %} powderblue {% endif %};
+            color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} white {% else %} black {% endif %};
+        }
+
+        a {
+            color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} lightblue {% else %} lightblue {% endif %};
+        }
+    </style>
+
 </head>
 
 <body>
@@ -75,7 +86,6 @@
             </div>
 
             <!-- Timezone Selector Form -->
-            <<!-- Timezone Selector Form -->
             <form method="post" action="{% url 'set_timezone' %}" class="timezone-form mb-3">
                 {% csrf_token %}
                 <div class="d-flex flex-row align-items-center">
@@ -89,15 +99,15 @@
                 </div>
             </form>
 
-            <!-- Available Models Section -->
-            <div class="text-light">
-                <h6>{% trans "Available Models:" %}</h6>
-                <ul class="list-unstyled">
-                    {% for model in models %}
-                    <li>{{ model }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
+
+{#            <div class="text-light">#}
+{#                <h6>{% trans "Available Models:" %}</h6>#}
+{#                <ul class="list-unstyled">#}
+{#                    {% for model in models %}#}
+{#                    <li>{{ model }}</li>#}
+{#                    {% endfor %}#}
+{#                </ul>#}
+{#            </div>#}
 
             <!-- Footer Links -->
             <ul class="navbar-nav d-flex flex-row mt-4">
@@ -109,6 +119,11 @@
                 <li class="nav-item">
                     <a class="nav-link text-light px-3" href="{% url 'django.contrib.flatpages.views.flatpage' '/contact/' %}">
                         {% trans "Contact" %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light px-3" href="{% url 'subscriber:subscription' %}">
+                        {% trans "Subscribe" %}
                     </a>
                 </li>
             </ul>
