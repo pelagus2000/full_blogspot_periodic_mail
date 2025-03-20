@@ -9,15 +9,58 @@ from django.contrib import messages
 from django.http import HttpResponse
 # from .tasks import hello
 # from django.db import IntegrityError
+# from pytz import timezone
+# from datetime import datetime, timedelta
+# import pytz
+# from django.utils import timezone
+# from django.utils.timezone import activate
+# from django.utils.timezone import now
+# from post.models import Posts
+from django.views.generic import ListView
 
-class SubscriberView(View):
+# class Index(View):
+#     def get(self, request):
+#         current_time = timezone.now()
+#         models = Posts.objects.all()
+#
+#         context = {
+#             'models': models,
+#             'current_time': current_time,
+#             'timezones': pytz.common_timezones
+#         }
+#
+#         return HttpResponse(render(request, 'index.html', context))
+#
+#     def post(self, request):
+#         request.session['django_timezone'] = request.POST['timezone']
+#         return redirect('/')
+#
+# def set_timezone(request):
+#     if request.method == 'POST':
+#         timezone = request.POST.get('timezone')
+#         if timezone in pytz.all_timezones:
+#             request.session['django_timezone'] = timezone  # Save the timezone in the session
+#             activate(timezone)  # Activate the selected timezone
+#         # Redirect back to the page the user came from
+#         return redirect(request.META.get('HTTP_REFERER', '/'))
+
+class SubscriberView(ListView):
     success_url = reverse_lazy('posts_list')
+    context_object_name = 'subscriber'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     user_timezone = timezone.get_current_timezone()
+    #     context['current_time'] = timezone.now().astimezone(user_timezone)  # Adjust to user's timezone
+    #     context['timezones'] = pytz.common_timezones
+    #     return context
 
     def get(self, request, *args, **kwargs):
         form = SubscriberForm()  # Создаем пустую форму
         return render(request, 'subscriber/make_subscription.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
+        # request.session['django_timezone'] = request.POST['timezone']
         form = SubscriberForm(request.POST)  # Заполняем форму данными POST-запроса
 
         if form.is_valid():
