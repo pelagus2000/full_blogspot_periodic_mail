@@ -6,6 +6,7 @@
     <title>Bare - Start Bootstrap Template</title>
     {% load static %}
     {% load i18n %}
+    {% load tz %}
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
 </head>
 
@@ -66,9 +67,40 @@
     </div>
 
     <!-- Footer Section -->
-    <footer class="navbar navbar-dark bg-dark py-2">
-        <div class="container d-flex justify-content-center">
-            <ul class="navbar-nav d-flex flex-row">
+    <footer class="navbar navbar-dark bg-dark py-3">
+        <div class="container d-flex flex-column align-items-center">
+            <!-- Current Time Display -->
+            <div class="text-light mb-3">
+                <h5>{% trans "Current Time:" %} {{ current_time }}</h5>
+            </div>
+
+            <!-- Timezone Selector Form -->
+            <<!-- Timezone Selector Form -->
+            <form method="post" action="{% url 'set_timezone' %}" class="timezone-form mb-3">
+                {% csrf_token %}
+                <div class="d-flex flex-row align-items-center">
+                    <label for="timezone" class="form-label me-2 text-light">{% trans "Time Zone:" %}</label>
+                    <select name="timezone" id="timezone" class="form-select">
+                        {% for tz in timezones %}
+                        <option value="{{ tz }}" {% if tz == TIME_ZONE %}selected{% endif %}>{{ tz }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-outline-light ms-2">{% trans "Set Timezone" %}</button>
+                </div>
+            </form>
+
+            <!-- Available Models Section -->
+            <div class="text-light">
+                <h6>{% trans "Available Models:" %}</h6>
+                <ul class="list-unstyled">
+                    {% for model in models %}
+                    <li>{{ model }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Footer Links -->
+            <ul class="navbar-nav d-flex flex-row mt-4">
                 <li class="nav-item">
                     <a class="nav-link text-light px-3" href="{% url 'django.contrib.flatpages.views.flatpage' '/about/' %}">
                         {% trans "About" %}
@@ -79,13 +111,29 @@
                         {% trans "Contact" %}
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light px-3" href="{% url 'subscriber:subscription' %}">
-                        {% trans "Subscribe" %}
-                    </a>
-                </li>
             </ul>
         </div>
     </footer>
+{#    <footer class="navbar navbar-dark bg-dark py-2">#}
+{#        <div class="container d-flex justify-content-center">#}
+{#            <ul class="navbar-nav d-flex flex-row">#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link text-light px-3" href="{% url 'django.contrib.flatpages.views.flatpage' '/about/' %}">#}
+{#                        {% trans "About" %}#}
+{#                    </a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link text-light px-3" href="{% url 'django.contrib.flatpages.views.flatpage' '/contact/' %}">#}
+{#                        {% trans "Contact" %}#}
+{#                    </a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link text-light px-3" href="{% url 'subscriber:subscription' %}">#}
+{#                        {% trans "Subscribe" %}#}
+{#                    </a>#}
+{#                </li>#}
+{#            </ul>#}
+{#        </div>#}
+{#    </footer>#}
     </body>
 </html>

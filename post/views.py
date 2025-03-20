@@ -1,9 +1,11 @@
 from django.shortcuts import get_object_or_404
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from pytz.reference import Eastern
+
 from .filters import PostsFilter
 from .models import Posts
-from pprint import pprint
+# from pprint import pprint
 from .forms import NewsForm, ArticleForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -17,23 +19,49 @@ from django.utils.timezone import now
 from django.template.loader import render_to_string
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.http import Http404, HttpResponse
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from comment.models import Comment
 from comment.forms import CommentForm
 from django.core.cache import cache
-from django.utils.translation import gettext as _  # импортируем функцию для перевода
+from django.utils.translation import gettext as _
+from pytz import timezone
+from datetime import datetime, timedelta
+import pytz
+from django.utils import timezone
+from django.utils.timezone import activate
+
 
 
 # Create your views here.
 
 class Index(View):
     def get(self, request):
-        string = _('Hello world')
+        current_time = timezone.now()
+        models = Posts.objects.all()
 
-        return HttpResponse(string)
+        context = {
+            'models': models,
+            'current_time': current_time,
+            'timezones': pytz.common_timezones
+        }
+
+        return HttpResponse(render(request, 'index.html', context))
+
+    def post(self, request):
+        request.session['django_timezone'] = request.POST['timezone']
+        return redirect('/')
+
+def set_timezone(request):
+    if request.method == 'POST':
+        timezone = request.POST.get('timezone')
+        if timezone in pytz.all_timezones:
+            request.session['django_timezone'] = timezone  # Save the timezone in the session
+            activate(timezone)  # Activate the selected timezone
+        # Redirect back to the page the user came from
+        return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
 class PostsList(ListView):
@@ -60,6 +88,9 @@ class PostsList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
+        context['current_time'] = timezone.now()
+        context['timezones'] = pytz.common_timezones
+
         return context
 
 from django.contrib.auth.mixins import PermissionRequiredMixin
